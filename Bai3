@@ -1,0 +1,141 @@
+#include <stdio.h>
+
+// Hàm sắp xếp bằng thuật toán Insertion Sort
+void insertionSort(int arr[], int n) {
+    int i, key, j;
+    for (i = 1; i < n; i++) {
+        key = arr[i];
+        j = i - 1;
+
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j = j - 1;
+        }
+        arr[j + 1] = key;
+    }
+}
+
+// Hàm sắp xếp bằng thuật toán Selection Sort
+void selectionSort(int arr[], int n) {
+    int i, j, min_idx;
+    for (i = 0; i < n-1; i++) {
+        min_idx = i;
+        for (j = i+1; j < n; j++)
+            if (arr[j] < arr[min_idx])
+                min_idx = j;
+        int temp = arr[min_idx];
+        arr[min_idx] = arr[i];
+        arr[i] = temp;
+    }
+}
+
+// Hàm sắp xếp bằng thuật toán Bubble Sort
+void bubbleSort(int arr[], int n) {
+    int i, j;
+    for (i = 0; i < n-1; i++)
+        for (j = 0; j < n-i-1; j++)
+            if (arr[j] > arr[j+1]) {
+                int temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+            }
+}
+
+// Hàm merge 2 mảng con của arr[]
+void merge(int arr[], int l, int m, int r) {
+    int i, j, k;
+    int n1 = m - l + 1;
+    int n2 = r - m;
+
+    int L[n1], R[n2];
+
+    for (i = 0; i < n1; i++)
+        L[i] = arr[l + i];
+    for (j = 0; j < n2; j++)
+        R[j] = arr[m + 1 + j];
+
+    i = 0;
+    j = 0;
+    k = l;
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            arr[k] = L[i];
+            i++;
+        } else {
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < n1) {
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+
+    while (j < n2) {
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
+}
+
+// Hàm sắp xếp bằng thuật toán Merge Sort
+void mergeSort(int arr[], int l, int r) {
+    if (l < r) {
+        int m = l + (r - l) / 2;
+
+        mergeSort(arr, l, m);
+        mergeSort(arr, m + 1, r);
+
+        merge(arr, l, m, r);
+    }
+}
+
+// Hàm in dãy số nguyên
+void printArray(int arr[], int n) {
+    for (int i = 0; i < n; i++)
+        printf("%d ", arr[i]);
+    printf("\n");
+}
+
+int main() {
+    // Khởi tạo mảng cố định để thử nghiệm sắp xếp
+    int arr[] = {23,45,3,2,11,2};
+
+    int n = sizeof(arr)/sizeof(arr[0]);
+
+    printf("\nDãy số trước khi sắp xếp: ");
+    printArray(arr, n);
+
+    // Sắp xếp và in kết quả
+    printf("\nInsertion Sort: ");
+    insertionSort(arr, n);
+    printArray(arr, n);
+
+    // Sao chép mảng để sử dụng cho các thuật toán khác
+    int tempArr[n];
+    for (int i = 0; i < n; i++)
+        tempArr[i] = arr[i];
+
+    printf("\nSelection Sort: ");
+    selectionSort(tempArr, n);
+    printArray(tempArr, n);
+
+    for (int i = 0; i < n; i++)
+        tempArr[i] = arr[i];
+
+    printf("\nBubble Sort: ");
+    bubbleSort(tempArr, n);
+    printArray(tempArr, n);
+
+    for (int i = 0; i < n; i++)
+        tempArr[i] = arr[i];
+
+    printf("\nMerge Sort: ");
+    mergeSort(tempArr, 0, n - 1);
+    printArray(tempArr, n);
+
+    return 0;
+}
